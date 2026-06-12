@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>MarcaAI - Dono da Loja</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="Css/css.css">
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="sidebar-logo">MarcaAI</div>
+        <ul class="menu">
+            <li><a href="javascript:void(0)" onclick="showSection('section-dash')" class="menu-item active"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showSection('section-agenda-dono')" class="menu-item"><i class="fa-solid fa-calendar-days"></i><span>Agenda</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showSection('section-historico')" class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i><span>Histórico</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showSection('section-metas')" class="menu-item"><i class="fa-solid fa-bullseye"></i><span>Metas</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showSection('section-minha-loja')" class="menu-item"><i class="fa-solid fa-shop"></i><span>Minha Loja</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showSection('section-buscar-lojas')" class="menu-item"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar Lojas</span></a></li>
+            <li><a href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i><span>Sair</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="header">
+            <h1 id="page-title">Dashboard</h1>
+            <div class="profile">
+                <img src="" id="header-loja-logo" alt="">
+                <strong id="header-loja-nome">Loja</strong>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <section id="section-dash" class="content-section">
+            <div class="cards">
+                <div class="card">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Clientes Hoje</h3>
+                    <div class="card-value" id="dash-clientes">0</div>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                    <h3>Faturamento Hoje</h3>
+                    <div class="card-value" id="dash-faturamento">R$ 0,00</div>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-percent"></i>
+                    <h3>Meta Diária</h3>
+                    <div class="card-value" id="dash-meta">0%</div>
+                    <div class="progress"><div class="progress-bar" id="dash-meta-progress" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AGENDA -->
+        <section id="section-agenda-dono" class="content-section hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Agenda</h2>
+                    <div>
+                        <button class="btn" style="width:auto; padding:8px 15px" onclick="filtrarAgenda('hoje')">Hoje</button>
+                        <button class="btn" style="width:auto; padding:8px 15px" onclick="filtrarAgenda('7dias')">7 Dias</button>
+                        <button class="btn" style="width:auto; padding:8px 15px" onclick="filtrarAgenda('30dias')">30 Dias</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Cliente</th><th>Data/Hora</th><th>Serviço</th><th>Valor</th><th>Status</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="tabelaAgendaDono"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- HISTÓRICO -->
+        <section id="section-historico" class="content-section hidden">
+            <div class="section">
+                <h2>Histórico (Últimos 30 dias)</h2>
+                <div class="cards" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 20px;">
+                    <div class="card"><h3>Total Arrecadado</h3><div class="card-value" id="hist-total">R$ 0,00</div></div>
+                    <div class="card"><h3>Atendimentos</h3><div class="card-value" id="hist-qtd">0</div></div>
+                    <div class="card"><h3>Ticket Médio</h3><div class="card-value" id="hist-ticket">R$ 0,00</div></div>
+                </div>
+                <table>
+                    <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Data/Hora</th></tr></thead>
+                    <tbody id="tabelaHistorico"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- MINHA LOJA -->
+        <section id="section-minha-loja" class="content-section hidden">
+            <div class="section">
+                <h2>Minha Loja</h2>
+                <div class="form-group">
+                    <label>Logo da Loja</label>
+                    <img src="" id="loja-logo-preview" class="preview-img">
+                    <input type="file" id="loja-logo-input" onchange="previewImagem(this, 'loja-logo-preview')">
+                </div>
+                <div class="form-group"><label>Nome da Loja</label><input type="text" id="loja-nome-edit"></div>
+                <div class="form-group"><label>Descrição</label><textarea id="loja-desc-edit"></textarea></div>
+                <div class="form-group"><label>Telefone</label><input type="text" id="loja-tel-edit"></div>
+                <div class="form-group"><label>WhatsApp</label><input type="text" id="loja-zap-edit"></div>
+                <div class="form-group"><label>Endereço</label><input type="text" id="loja-end-edit"></div>
+                <button class="btn" onclick="salvarDadosLoja()">Salvar Alterações</button>
+            </div>
+        </section>
+
+        <!-- BUSCAR LOJAS (IGUAL AO CLIENTE) -->
+        <section id="section-buscar-lojas" class="content-section hidden">
+            <div class="search-box">
+                <input type="text" id="inputBuscaDono" placeholder="Buscar loja..." onkeyup="filtrarLojasDono()">
+            </div>
+            <div class="lojas" id="listaLojasDono"></div>
+        </section>
+
+        <!-- METAS -->
+        <section id="section-metas" class="content-section hidden">
+            <div class="section">
+                <h2>Configurar Metas</h2>
+                <div class="form-group"><label>Meta Diária (R$)</label><input type="number" id="meta-dia-input"></div>
+                <div class="form-group"><label>Meta Mensal (R$)</label><input type="number" id="meta-mes-input"></div>
+                <button class="btn" onclick="salvarMetas()">Salvar Metas</button>
+            </div>
+        </section>
+
+        <!-- AGENDAR EM OUTRA LOJA -->
+        <section id="section-agendar-dono" class="content-section hidden">
+            <div class="section">
+                <h2 id="agendar-titulo-dono"></h2>
+                <input type="hidden" id="agendar-loja-id-dono">
+                <div class="form-group"><label>Data</label><input type="date" id="agendar-data-dono"></div>
+                <div class="form-group">
+                    <label>Horário</label>
+                    <select id="agendar-horario-dono">
+                        <option>09:00</option><option>10:00</option><option>11:00</option>
+                        <option>14:00</option><option>15:00</option><option>16:00</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Serviço</label><input type="text" id="agendar-servico-dono"></div>
+                <div class="form-group"><label>Valor (R$)</label><input type="number" id="agendar-valor-dono"></div>
+                <button class="btn" onclick="confirmarAgendamentoDono()">Agendar</button>
+                <button class="btn" style="background:#64748b; margin-top:10px" onclick="showSection('section-buscar-lojas')">Cancelar</button>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module">
+    import { initDono } from "./js/donoLoja.js";
+    document.addEventListener('DOMContentLoaded', () => {
+        initDono();
+    });
+</script>
+<script>
+    // Funções de interface localizadas no HTML para controle de UI
+    function previewImagem(input, previewId) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(previewId).src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        const activeMenu = Array.from(document.querySelectorAll('.menu-item')).find(m => m.getAttribute('onclick').includes(id));
+        if(activeMenu) activeMenu.classList.add('active');
+
+        const titles = {
+            'section-dash': 'Dashboard',
+            'section-agenda-dono': 'Agenda',
+            'section-historico': 'Histórico',
+            'section-metas': 'Metas',
+            'section-minha-loja': 'Minha Loja',
+            'section-buscar-lojas': 'Buscar Lojas'
+        };
+        document.getElementById('page-title').innerText = titles[id] || 'MarcaAI';
+        
+        if(id === 'section-agenda-dono') filtrarAgenda('hoje');
+        if(id === 'section-historico') carregarHistorico();
+        if(id === 'section-buscar-lojas') renderizarLojasDono();
+    }
+</script>
+</body>
+</html>

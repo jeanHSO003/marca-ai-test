@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MarcaAI - Cliente</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+</style>
+<link rel="stylesheet" href="Css/css.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- MENU -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            MarcaAI
+        </div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="javascript:void(0)" onclick="showSection('section-buscar')" class="menu-item active">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Buscar Lojas</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" onclick="showSection('section-agenda')" class="menu-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Meus Agendamentos</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" onclick="showSection('section-perfil')" class="menu-item">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Perfil</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Sair</span>
+                </a>
+            </li>
+            
+        </ul>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="main">
+
+        <div class="header">
+            <h1 id="page-title">Buscar Lojas</h1>
+            <div class="profile">
+                <img src="https://i.pravatar.cc/100" id="header-user-img" alt="">
+                <strong id="header-user-name">Carregando...</strong>
+            </div>
+        </div>
+
+        <!-- SEÇÃO: BUSCAR LOJAS -->
+        <section id="section-buscar" class="content-section">
+            <div class="search-box">
+                <input type="text" id="inputBusca" placeholder="Buscar loja por nome..." onkeyup="filtrarLojas()">
+            </div>
+            <div class="lojas" id="listaLojas">
+                <!-- Dinâmico -->
+            </div>
+        </section>
+
+        <!-- SEÇÃO: AGENDAR (MODAL SIMULADO) -->
+        <section id="section-novo-agendamento" class="content-section hidden">
+            <div class="section">
+                <h2 id="agendar-titulo">Agendar em: Barbearia Alpha</h2>
+                <input type="hidden" id="agendar-loja-id">
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="agendar-data">
+                </div>
+                <div class="form-group">
+                    <label>Horário</label>
+                    <select id="agendar-horario">
+                        <option>09:00</option><option>10:00</option><option>11:00</option>
+                        <option>14:00</option><option>15:00</option><option>16:00</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Serviço</label>
+                    <input type="text" id="agendar-servico" placeholder="Ex: Corte de Cabelo">
+                </div>
+                <div class="form-group">
+                    <label>Descrição/Observação</label>
+                    <textarea id="agendar-desc" rows="3"></textarea>
+                </div>
+                <button class="btn" onclick="confirmarAgendamento()">Confirmar Agendamento</button>
+                <button class="btn" style="background:#64748b; margin-top:10px" onclick="showSection('section-buscar')">Cancelar</button>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: MEUS AGENDAMENTOS -->
+        <section id="section-agenda" class="content-section hidden">
+            <div class="section">
+                <h2>Meus Agendamentos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Loja</th>
+                            <th>Data/Hora</th>
+                            <th>Serviço</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaAgendamentos">
+                        <!-- Dinâmico -->
+                    </tbody>
+                </table>
+                <div id="agenda-vazia" class="msg hidden">Nenhum agendamento encontrado.</div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: PERFIL -->
+        <section id="section-perfil" class="content-section hidden">
+            <div class="section">
+                <h2>Meu Perfil</h2>
+                <div class="form-group">
+                    <label>Foto de Perfil</label>
+                    <img src="" id="perfil-preview" class="preview-img">
+                    <input type="file" id="perfil-foto" accept="image/*" onchange="previewImagem(this, 'perfil-preview')">
+                </div>
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="perfil-nome">
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="perfil-email" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Conta</label>
+                    <input type="text" id="perfil-tipo" disabled>
+                </div>
+                <button class="btn" onclick="salvarPerfil()">Salvar Alterações</button>
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module" src="js/Login.js"></script>
+<script type="module" src="js/clinte.js"></script>
+<script>
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+        protegerPagina();
+        carregarDados();
+        renderizarLojas();
+        atualizarHeader();
+    });
+</script>
+</body>
+</html>

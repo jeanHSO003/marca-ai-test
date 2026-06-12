@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MarcaAI - Login</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#2563eb,#1e3a8a);
+}
+
+.container{
+    width:100%;
+    max-width:450px;
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 15px 30px rgba(0,0,0,.2);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo h1{
+    color:#2563eb;
+    font-size:40px;
+}
+
+.logo p{
+    color:#64748b;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.form-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+.btn{
+    width:100%;
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#1d4ed8;
+}
+
+.msg{
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.cadastro{
+    text-align:center;
+    margin-top:20px;
+}
+
+.cadastro a{
+    text-decoration:none;
+    color:#2563eb;
+    font-weight:bold;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <h1>MarcaAI</h1>
+        <p>Entre na sua conta</p>
+    </div>
+
+    <form id="formLogin">
+
+        <div class="form-group">
+            <label>E-mail</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Digite seu e-mail"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Senha</label>
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+                required
+            >
+        </div>
+
+        <button class="btn" type="submit">
+            Entrar
+        </button>
+
+    </form>
+
+    <div class="msg" id="mensagem"></div>
+
+    <div class="cadastro">
+        Não possui conta?
+        <a href="cadastro.html">
+            Cadastre-se
+        </a>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module" src="js/Login.js"></script>
+
+</body>
+</html>
